@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Registrarse</title>
+
+  <!-- (Opcional) Bootstrap para grid/resets, no afecta la recepción de datos -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <!-- Tu CSS -->
+  <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body class="bg-page">
+
+  <!-- BARRA SUPERIOR -->
+  <header class="bg-mep text-white py-2 shadow-sm">
+    <div class="container d-flex align-items-center gap-3">
+      <img th:src="@{/img/mep-logo.png}" alt="Logo MEP" height="36" class="logo-mep"/>
+      <h1 class="h6 m-0 fw-semibold">Registro de usuario · MEP</h1>
+    </div>
+  </header>
+
+  <!-- SUBNAV (barra de navegación superior secundaria) -->
+  <nav class="bg-mep-700 text-white">
+    <div class="container d-flex gap-4 py-2 small">
+      <a class="nav-link-lite" th:href="@{/faq}">Preguntas Frecuentes</a>
+      <a class="nav-link-lite" th:href="@{/ayuda}">Ayuda</a>
+      <a class="nav-link-lite" th:href="@{/contacto}">Contáctanos</a>
+    </div>
+  </nav>
+
+  <!-- CONTENIDO: no se modifica la recepción de datos, solo el contenedor visual -->
+  <main class="container py-5">
+    <div class="register-card shadow-sm rounded-3 p-4 p-lg-5">
+      <!-- === AQUÍ VA TU CÓDIGO ORIGINAL SIN CAMBIOS DE CAMPOS === -->
+      <div class="container">
+        <h1>Registro de usuario</h1>
+        <form th:action="@{/register}" th:object="${usuario}" method="post">
+            <div class="form-group">
+                <label for="tipoDocumento">Tipo de Documento</label>
+                <select id="tipoDocumento" th:field="*{tipoDocumento}" required>
+                    <option value="" disabled selected>Seleccione</option>
+                    <option value="Cédula de Ciudadanía">Cédula de Ciudadanía</option>
+                    <option value="Tarjeta de Identidad">Tarjeta de Identidad</option>
+                    <option value="Cédula de Extranjería">Cédula de Extranjería</option>
+                    <option value="Pasaporte">Pasaporte</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="numeroDocumento">Número de Documento</label>
+                <input type="text" id="numeroDocumento" th:field="*{numeroDocumento}" required>
+            </div>
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" th:field="*{nombre}" required>
+            </div>
+            <div class="form-group">
+                <label for="apellido">Apellido</label>
+                <input type="text" id="apellido" th:field="*{apellido}" required>
+            </div>
+            <div class="form-group">
+                <label for="telefono">Teléfono</label>
+                <input type="text" id="telefono" th:field="*{telefono}" required>
+            </div>
+            <div class="form-group">
+                <label for="correo">Correo electrónico</label>
+                <input type="email" id="correo" th:field="*{correo}" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" th:field="*{password}" required>
+            </div>
+            <div class="form-actions">
+                <button type="submit">Registrar</button>
+            </div>
+        </form>
+        <p>¿Ya tienes una cuenta? <a th:href="@{/login}">Inicia sesión aquí</a></p>
+      </div>
+      <!-- === FIN DE TU CÓDIGO ORIGINAL === -->
+    </div>
+  </main>
+
+  <!-- BARRA INFERIOR -->
+  <footer class="footer-mep">
+    <div class="container d-flex flex-wrap justify-content-between align-items-center gap-3 py-3">
+      <span class="small text-white-50">© <span th:text="${#temporals.format(#temporals.createNow(), 'yyyy')}"></span> MEP</span>
+      <nav class="d-flex gap-3 small">
+        <a class="nav-link-lite" th:href="@{/terminos}">Términos</a>
+        <a class="nav-link-lite" th:href="@{/privacidad}">Privacidad</a>
+        <a class="nav-link-lite" th:href="@{/soporte}">Soporte</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- (Opcional) Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
