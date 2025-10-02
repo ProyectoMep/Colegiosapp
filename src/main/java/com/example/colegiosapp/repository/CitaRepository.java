@@ -9,7 +9,8 @@ import org.springframework.stereotype.Repository;
 import com.example.colegiosapp.entity.Cita;
 
 /**
- * Repository for managing {@link Cita} entities.
+ * Es una interfaz de Spring Data JPA que hereda de JpaRepository, lo cual permite gestionar
+ *  la entidad Cita con operaciones CRUD sin necesidad de escribir código SQL
  */
 @Repository
 public interface CitaRepository extends JpaRepository<Cita, Long> {

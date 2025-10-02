@@ -38,7 +38,7 @@ public class ReportGenerator {
     private final InstitucionRepository institucionRepository;
 
     public ReportGenerator(CitaRepository citaRepository,
-                           InstitucionRepository institucionRepository) {
+                    InstitucionRepository institucionRepository) {
         this.citaRepository = citaRepository;
         this.institucionRepository = institucionRepository;
     }
@@ -131,7 +131,7 @@ public class ReportGenerator {
             row.createCell(7).setCellValue(nullSafe(c.getEstado()));
         }
 
-        // Auto-size columns
+        // Ajustar automáticamente el tamaño de las columnas
         for (int i = 0; i < headers.length; i++) {
             sheet.autoSizeColumn(i);
         }
@@ -140,8 +140,8 @@ public class ReportGenerator {
     // ================= PDF =================
 
     /**
-     * Generates a PDF report. If {@code institucionId} is null, it generates a
-     * multi-section PDF (one section per institution), separated by pages.
+     * Genera un informe en PDF. Si {@code institucionId} es nulo,
+     * genera un PDF con varias secciones (una sección por institución), separadas por páginas.
      */
     @SuppressWarnings("ConvertToTryWithResources")
     public byte[] generateCitasPdf(Long institucionId) {
@@ -170,7 +170,7 @@ public class ReportGenerator {
         }
     }
 
-    // ---- helpers PDF ----
+    // ---- ayudantes PDF ----
 
     private void addInstitutionSection(Document doc, Institucion inst) throws DocumentException {
         Font H1 = new Font(Font.HELVETICA, 16, Font.BOLD);
@@ -186,11 +186,10 @@ public class ReportGenerator {
             return;
         }
 
-        // Title
+        // Titulo
         doc.add(new Paragraph("Reporte de citas para " + nullSafe(inst.getNombre()), H1));
         doc.add(new Paragraph(" ", H2));
 
-        // Summary
         Map<String, Long> summary = generateCitaStatusSummary(inst.getId());
         PdfPTable sum = new PdfPTable(2);
         sum.setWidthPercentage(30);
@@ -207,7 +206,7 @@ public class ReportGenerator {
         doc.add(new Paragraph("Detalle", H2));
         doc.add(new Paragraph(" ", H2));
 
-        // Detail Table
+        // Tabla de detalles
         String[] headers = {"ID", "Fecha", "Hora", "Nombre", "Correo", "Teléfono", "Cantidad", "Estado"};
         float[] widths = {8, 14, 12, 26, 28, 20, 12, 16};
 
