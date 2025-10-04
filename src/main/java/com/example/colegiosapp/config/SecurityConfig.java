@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .requestMatchers("/admin/**").hasAuthority("Administrador")
                 .anyRequest().authenticated()
             )
-            .formLogin(form -> form 
+            .formLogin(form -> form
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
                 .usernameParameter("correo")
