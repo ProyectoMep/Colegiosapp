@@ -31,7 +31,7 @@ import com.example.colegiosapp.util.ReportGenerator;
 /**
  * Gestiona funciones administrativas específicas, como la gestión de roles de usuarios,
  * el registro de nuevas instituciones y la generación de informes.
- */
+ */ 
 @SuppressWarnings("unused")
 @Controller
 @RequestMapping("/admin")
