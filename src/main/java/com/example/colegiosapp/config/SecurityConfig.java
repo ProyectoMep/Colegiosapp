@@ -50,7 +50,6 @@ public class SecurityConfig {
                 // Rutas por rol
                 .requestMatchers("/tutor/**").hasAuthority("Tutor")
                 .requestMatchers("/admin/**").hasAuthority("Administrador")
-                // Todo lo demás, autenticado
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
@@ -71,7 +70,7 @@ public class SecurityConfig {
                 .deleteCookies("JSESSIONID")
                 .permitAll()
             )
-            // >>>>>>>>>> AÑADIDO: manejo central de no autorizado / acceso denegado
+            // manejo central de no autorizado / acceso denegado
             .exceptionHandling(exception -> exception
                 // 403: Usuario AUTENTICADO pero sin permisos
                 .accessDeniedHandler((request, response, accessDeniedException) -> {
@@ -82,7 +81,6 @@ public class SecurityConfig {
                     response.sendRedirect("/login?denied");
                 })
             );
-            // <<<<<<<<<< AÑADIDO
 
         // Registrar explícitamente el UserDetailsService
         http.userDetailsService(usuarioService);

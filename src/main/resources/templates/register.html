@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Registrarse</title>
 
-  <!-- (Opcional) Bootstrap para grid/resets, no afecta la recepción de datos -->
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
 
-  <!-- Tu CSS -->
+  <!-- CSS -->
   <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 <body class="bg-page">
@@ -33,7 +33,7 @@
   <!-- CONTENIDO: no se modifica la recepción de datos, solo el contenedor visual -->
   <main class="container py-5">
     <div class="register-card shadow-sm rounded-3 p-4 p-lg-5">
-      <!-- === AQUÍ VA TU CÓDIGO ORIGINAL SIN CAMBIOS DE CAMPOS === -->
+
       <div class="container">
         <h1>Registro de usuario</h1>
         <form th:action="@{/register}" th:object="${usuario}" method="post">
@@ -77,7 +77,7 @@
         </form>
         <p>¿Ya tienes una cuenta? <a th:href="@{/login}">Inicia sesión aquí</a></p>
       </div>
-      <!-- === FIN DE TU CÓDIGO ORIGINAL === -->
+
     </div>
   </main>
 
@@ -93,7 +93,7 @@
     </div>
   </footer>
 
-  <!-- (Opcional) Bootstrap JS -->
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

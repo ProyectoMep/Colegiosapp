@@ -1,12 +1,13 @@
 package com.example.colegiosapp.config;
 
-import com.example.colegiosapp.entity.Rol;
-import com.example.colegiosapp.repository.RolRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import com.example.colegiosapp.entity.Rol;
+import com.example.colegiosapp.repository.RolRepository;
+
 /**
- * Initializes essential database records such as roles on application startup.
+ * Inicializa registros de base de datos esenciales, como roles, al iniciar la aplicación.
  */
 @Component
 public class DataInitializer implements CommandLineRunner {

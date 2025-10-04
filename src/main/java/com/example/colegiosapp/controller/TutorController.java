@@ -92,7 +92,7 @@ public class TutorController {
                                     @RequestParam("hora") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime hora,
                                     Authentication authentication,
                                     Model model) {
-        // Retrieve current user
+        
         Usuario usuario = usuarioRepository.findByCorreo(authentication.getName()).orElseThrow();
         Institucion institucion = institucionRepository.findById(institucionId).orElseThrow();
 

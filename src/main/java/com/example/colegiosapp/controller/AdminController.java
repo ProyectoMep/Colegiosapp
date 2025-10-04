@@ -29,8 +29,8 @@ import com.example.colegiosapp.repository.UsuarioRepository;
 import com.example.colegiosapp.util.ReportGenerator;
 
 /**
- * Handles admin-specific functionality such as managing user roles, registering
- * new institutions and generating reports.
+ * Gestiona funciones administrativas específicas, como la gestión de roles de usuarios,
+ * el registro de nuevas instituciones y la generación de informes.
  */
 @SuppressWarnings("unused")
 @Controller
@@ -44,10 +44,10 @@ public class AdminController {
     private final ReportGenerator reportGenerator;
 
     public AdminController(UsuarioRepository usuarioRepository,
-                           RolRepository rolRepository,
-                           InstitucionRepository institucionRepository,
-                           CitaRepository citaRepository,
-                           ReportGenerator reportGenerator) {
+                        RolRepository rolRepository,
+                        InstitucionRepository institucionRepository,
+                        CitaRepository citaRepository,
+                        ReportGenerator reportGenerator) {
         this.usuarioRepository = usuarioRepository;
         this.rolRepository = rolRepository;
         this.institucionRepository = institucionRepository;
@@ -55,13 +55,13 @@ public class AdminController {
         this.reportGenerator = reportGenerator;
     }
 
-    /** Displays the admin dashboard with buttons to various admin functions. */
+    /*Muestra el panel de administración con botones para varias funciones de administración.*/
     @GetMapping("/dashboard")
     public String dashboard() {
         return "admin/dashboard";
     }
 
-    /** Lists all users and roles for modification.  Admins can change a user's role by submitting the form. */
+    /** Enumera todos los usuarios y roles para modificar. Los administradores pueden cambiar el rol de un usuario enviando el formulario. */
     @GetMapping("/modificar-permisos")
     public String modificarPermisos(Model model) {
         List<Usuario> usuarios = usuarioRepository.findAll();
@@ -71,10 +71,10 @@ public class AdminController {
         return "admin/modificar_permisos";
     }
 
-    /** Updates the role of a specific user.  The user ID and the selected role ID are received from the form. */
+    /** Actualiza el rol de un usuario específico. El ID de usuario y el ID del rol seleccionado se obtienen del formulario. */
     @PostMapping("/modificar-permisos")
     public String actualizarPermisos(@RequestParam("usuarioId") Long usuarioId,
-                                     @RequestParam("rolId") Integer rolId) {
+                                    @RequestParam("rolId") Integer rolId) {
         Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow();
         Rol rol = rolRepository.findById(rolId).orElseThrow();
         usuario.setRol(rol);
@@ -82,14 +82,14 @@ public class AdminController {
         return "redirect:/admin/modificar-permisos";
     }
 
-    /** Displays the institution registration form. */
+    /** Muestra el formulario de registro de la institución. */
     @GetMapping("/registrar-institucion")
     public String mostrarRegistrarInstitucion(Model model) {
         model.addAttribute("institucion", new Institucion());
         return "admin/registrar_institucion";
     }
 
-    /** Saves a new institution to the database. */
+    /** guarda nuevas instituciones */
     @PostMapping("/registrar-institucion")
     public String registrarInstitucion(Institucion institucion) {
         institucionRepository.save(institucion);

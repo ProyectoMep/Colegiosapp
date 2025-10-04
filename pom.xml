@@ -8,7 +8,7 @@
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>3.5.6</version>
-    <relativePath/> <!-- lookup parent from repository -->
+    <relativePath/>
 </parent>
 
 <groupId>com.example</groupId>
@@ -24,13 +24,19 @@
 </properties>
 
 <dependencies>
-    <!-- Spring Boot starters -->
+
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+
+    <!-- Arrancadores de Spring Boot-->
     <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
 
-    <!-- Validación (Jakarta Validation) -->
+    <!-- Validación -->
     <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-validation</artifactId>
