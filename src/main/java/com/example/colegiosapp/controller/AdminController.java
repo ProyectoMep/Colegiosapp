@@ -1,13 +1,12 @@
 package com.example.colegiosapp.controller;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +21,7 @@ import com.example.colegiosapp.entity.Cita;
 import com.example.colegiosapp.entity.Institucion;
 import com.example.colegiosapp.entity.Rol;
 import com.example.colegiosapp.entity.Usuario;
+import com.example.colegiosapp.report.ReportService;
 import com.example.colegiosapp.repository.CitaRepository;
 import com.example.colegiosapp.repository.InstitucionRepository;
 import com.example.colegiosapp.repository.RolRepository;
@@ -31,7 +31,7 @@ import com.example.colegiosapp.util.ReportGenerator;
 /**
  * Gestiona funciones administrativas específicas, como la gestión de roles de usuarios,
  * el registro de nuevas instituciones y la generación de informes.
- */ 
+ */
 @SuppressWarnings("unused")
 @Controller
 @RequestMapping("/admin")
@@ -41,21 +41,24 @@ public class AdminController {
     private final RolRepository rolRepository;
     private final InstitucionRepository institucionRepository;
     private final CitaRepository citaRepository;
-    private final ReportGenerator reportGenerator;
+    private final ReportGenerator reportGenerator; // se mantiene para las estadísticas
+    private final ReportService reportService;     // nuevo servicio de reportes
 
     public AdminController(UsuarioRepository usuarioRepository,
                         RolRepository rolRepository,
                         InstitucionRepository institucionRepository,
                         CitaRepository citaRepository,
-                        ReportGenerator reportGenerator) {
+                        ReportGenerator reportGenerator,
+                        ReportService reportService) {
         this.usuarioRepository = usuarioRepository;
         this.rolRepository = rolRepository;
         this.institucionRepository = institucionRepository;
         this.citaRepository = citaRepository;
         this.reportGenerator = reportGenerator;
+        this.reportService = reportService;
     }
 
-    /*Muestra el panel de administración con botones para varias funciones de administración.*/
+    /* Muestra el panel de administración con botones para varias funciones de administración. */
     @GetMapping("/dashboard")
     public String dashboard() {
         return "admin/dashboard";
@@ -89,7 +92,7 @@ public class AdminController {
         return "admin/registrar_institucion";
     }
 
-    /** guarda nuevas instituciones */
+    /** Guarda nuevas instituciones */
     @PostMapping("/registrar-institucion")
     public String registrarInstitucion(Institucion institucion) {
         institucionRepository.save(institucion);
@@ -145,29 +148,42 @@ public class AdminController {
         return "admin/reportes";
     }
 
-    /** Excel */
+    /** Descarga de reporte en Excel usando el patrón Strategy */
     @GetMapping("/reportes/download")
     public ResponseEntity<InputStreamResource> descargarReporte(
             @RequestParam(value = "institucionId", required = false) Long institucionId) throws IOException {
-        ByteArrayOutputStream out;
-        try (Workbook workbook = reportGenerator.generateCitasWorkbook(institucionId)) {
-            out = new ByteArrayOutputStream();
-            workbook.write(out);
+
+        // Llama a la estrategia de Excel a través del servicio
+        byte[] data;
+        try {
+            data = reportService.generateReport("excel", institucionId);
+        } catch (Exception e) {
+            // Manejo de errores simplificado: podrías registrar el error y retornar un 500
+            throw new IOException("Error al generar el reporte en Excel", e);
         }
-        ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+
         String filename = (institucionId != null ? "reporte_citas_" + institucionId : "reporte_citas") + ".xlsx";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDisposition(ContentDisposition.attachment().filename(filename).build());
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .body(new InputStreamResource(in));
+                .headers(headers)
+                .body(new InputStreamResource(new ByteArrayInputStream(data)));
     }
 
-    /** PDF */
+    /** Descarga de reporte en PDF usando el patrón Strategy */
     @GetMapping(value = "/reportes/download-pdf", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> descargarReportePdf(
             @RequestParam(value = "institucionId", required = false) Long institucionId) {
 
-        byte[] pdf = reportGenerator.generateCitasPdf(institucionId);
+        byte[] pdf;
+        try {
+            pdf = reportService.generateReport("pdf", institucionId);
+        } catch (Exception e) {
+            // Manejo de errores simplificado: podrías registrar el error y retornar un 500
+            throw new RuntimeException("Error al generar el reporte en PDF", e);
+        }
         String filename = (institucionId != null ? "reporte_citas_" + institucionId : "reporte_citas") + ".pdf";
 
         HttpHeaders headers = new HttpHeaders();
